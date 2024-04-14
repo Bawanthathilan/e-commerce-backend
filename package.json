@@ -36,10 +36,5 @@
     "jsonwebtoken": "^9.0.2",
     "prisma": "^5.12.1",
     "zod": "^3.22.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   }
 }

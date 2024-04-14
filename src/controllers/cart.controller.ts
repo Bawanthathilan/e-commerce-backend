@@ -32,8 +32,8 @@ export const addItemTocart = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteItemFromcart = async (req: Request, res: Response) => {};
+// export const deleteItemFromcart = async (req: Request, res: Response) => {};
 
-export const changeQuantity = async (req: Request, res: Response) => {};
+// export const changeQuantity = async (req: Request, res: Response) => {};
 
-export const getCart = async (req: Request, res: Response) => {};
+// export const getCart = async (req: Request, res: Response) => {};

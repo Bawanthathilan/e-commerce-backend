@@ -8,10 +8,7 @@ import { ErrorCode } from '../exceptions/root';
 import { SignupSchema } from '../schema/users';
 import { NotFoundException } from '../exceptions/not-found';
 
-export const signup = async (
-  req: Request,
-  res: Response,
-) => {
+export const signup = async (req: Request, res: Response) => {
   SignupSchema.parse(req.body);
   const { email, password, name } = req.body;
 
