@@ -4,6 +4,7 @@ import { InternalException } from './src/exceptions/internal-exception';
 import { ZodError } from 'zod';
 import { BadRequestException } from './src/exceptions/bad-request';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const errorHandler = (method: Function) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {

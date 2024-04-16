@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CreateCartSchema } from '../schema/cart';
+import { CreateCartSchema , changeQuantitySchema } from '../schema/cart';
 import { NotFoundException } from '../exceptions/not-found';
 import { ErrorCode } from '../exceptions/root';
 import { Product } from '@prisma/client';
@@ -32,8 +32,38 @@ export const addItemTocart = async (req: Request, res: Response) => {
   }
 };
 
-// export const deleteItemFromcart = async (req: Request, res: Response) => {};
+export const deleteItemFromcart = async (req: Request, res: Response) => {
+  //check if user is delete its own cart items
+  await prismaClient.cartItems.delete({
+    where:{
+      id:+req.params.id
+    }
+  })
+  res.json({success:true})
+};
 
-// export const changeQuantity = async (req: Request, res: Response) => {};
+export const changeQuantity = async (req: Request, res: Response) => {
+  //check if user is delete its own cart items
+  const validateData = changeQuantitySchema.parse(req.body);
+  const updateCart = prismaClient.cartItems.update({
+    where:{
+      id:+req.params.id
+    },
+    data:{
+      quantity: validateData.quantity,
+    }
+  })
+  res.json(updateCart);
+};
 
-// export const getCart = async (req: Request, res: Response) => {};
+export const getCart = async (req: Request, res: Response) => {
+  const cart = prismaClient.cartItems.findMany({
+    where:{
+      userId:req.user.id 
+    },
+    include:{
+      product:true, //include the relations
+    }
+  })
+  res.json(cart);
+};
