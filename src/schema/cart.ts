@@ -5,6 +5,6 @@ export const CreateCartSchema = z.object({
   quantity: z.number()
 });
 
-export const ChangeQuantitySchema =  z.object({
+export const ChangeQuantitySchema = z.object({
   quantity: z.number()
-})
+});

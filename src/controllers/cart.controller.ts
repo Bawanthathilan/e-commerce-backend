@@ -38,13 +38,13 @@ export const deleteItemFromcart = async (req: Request, res: Response) => {
     where: {
       id: +req.params.id
     }
-  })
-  res.json({ success: true })
+  });
+  res.json({ success: true });
 };
 
 export const changeQuantity = async (req: Request, res: Response) => {
   // Check if user is updating its own cart item
-  const validatedData = ChangeQuantitySchema.parse(req.body)
+  const validatedData = ChangeQuantitySchema.parse(req.body);
   const updatedCart = await prismaClient.cartItems.update({
     where: {
       id: +req.params.id
@@ -52,9 +52,9 @@ export const changeQuantity = async (req: Request, res: Response) => {
     data: {
       quantity: validatedData.quantity
     }
-  })
+  });
 
-  res.json(updatedCart)
+  res.json(updatedCart);
 };
 
 export const getCart = async (req: Request, res: Response) => {
@@ -65,6 +65,6 @@ export const getCart = async (req: Request, res: Response) => {
     include: {
       product: true
     }
-  })
-  res.json(cart)
+  });
+  res.json(cart);
 };
