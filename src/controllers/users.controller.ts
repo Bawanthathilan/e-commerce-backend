@@ -28,10 +28,7 @@ export const deleteAddress = async (req: Request, res: Response) => {
     });
     res.json({ success: true });
   } catch (error) {
-    throw new NotFoundException(
-      'Address not found',
-      ErrorCode.ADDRESS_NOT_FOUND
-    );
+    throw new NotFoundException('Address not found', ErrorCode.ADDRESS_NOT_FOUND);
   }
 };
 
@@ -45,10 +42,7 @@ export const listAddress = async (req: Request, res: Response) => {
 
     res.json(addresses);
   } catch (error) {
-    throw new NotFoundException(
-      'Address not found.',
-      ErrorCode.ADDRESS_NOT_FOUND
-    );
+    throw new NotFoundException('Address not found.', ErrorCode.ADDRESS_NOT_FOUND);
   }
 };
 
@@ -65,16 +59,10 @@ export const updateUser = async (req: Request, res: Response) => {
         }
       });
     } catch (error) {
-      throw new NotFoundException(
-        'Address not found.',
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
+      throw new NotFoundException('Address not found.', ErrorCode.ADDRESS_NOT_FOUND);
     }
     if (shippingAddress.userId != req.user.id) {
-      throw new BadRequestException(
-        'Address does not belong to user',
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
+      throw new BadRequestException('Address does not belong to user', ErrorCode.ADDRESS_NOT_FOUND);
     }
   }
   if (validatedData.defaultBillingAddress) {
@@ -85,16 +73,10 @@ export const updateUser = async (req: Request, res: Response) => {
         }
       });
     } catch (error) {
-      throw new NotFoundException(
-        'Address not found.',
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
+      throw new NotFoundException('Address not found.', ErrorCode.ADDRESS_NOT_FOUND);
     }
     if (billingAddress.userId != req.user.id) {
-      throw new BadRequestException(
-        'Address does not belong to user',
-        ErrorCode.ADDRESS_NOT_FOUND
-      );
+      throw new BadRequestException('Address does not belong to user', ErrorCode.ADDRESS_NOT_FOUND);
     }
   }
 

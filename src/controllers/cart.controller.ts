@@ -25,10 +25,7 @@ export const addItemTocart = async (req: Request, res: Response) => {
 
     res.json(cart);
   } catch (error) {
-    throw new NotFoundException(
-      'Product not found',
-      ErrorCode.PRODUCT_NOT_FOUND
-    );
+    throw new NotFoundException('Product not found', ErrorCode.PRODUCT_NOT_FOUND);
   }
 };
 
