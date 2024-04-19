@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { ErrorCode, HttpException } from './src/exceptions/root';
 import { InternalException } from './src/exceptions/internal-exception';
 import { ZodError } from 'zod';
