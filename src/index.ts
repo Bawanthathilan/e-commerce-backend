@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'; 
 import { PORT } from './secrets';
 import rootRouter from './routes';
 import { PrismaClient } from '@prisma/client';
@@ -6,6 +7,8 @@ import { errorMiddleware } from './middlewares/errors.middleware';
 
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 app.use('/api', rootRouter);
 
