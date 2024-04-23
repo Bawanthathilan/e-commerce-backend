@@ -16,7 +16,7 @@ const productRoutes: Router = Router();
 productRoutes.post('/', [authMiddleware, adminMiddleware], errorHandler(createProduct));
 productRoutes.put('/:id', [authMiddleware, adminMiddleware], errorHandler(updateProduct));
 productRoutes.delete('/:id', [authMiddleware, adminMiddleware], errorHandler(deleteProduct));
-productRoutes.get('/', [authMiddleware, adminMiddleware], errorHandler(listProducts));
+productRoutes.get('/', errorHandler(listProducts));
 productRoutes.get('/search', [authMiddleware], errorHandler(searchProducts));
 productRoutes.get('/:id', [authMiddleware, adminMiddleware], errorHandler(getProductById));
 
