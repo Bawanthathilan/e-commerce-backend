@@ -15,7 +15,28 @@ export const addItemTocart = async (req: Request, res: Response) => {
         id: validatedData.productId
       }
     });
-    const cart = await prismaClient.cartItems.create({
+
+    const existingcartItem = await prismaClient.cartItems.findFirst({
+      where:{
+        userId: req.user.id,
+        productId: Product.id,
+      }
+    })
+
+    if(existingcartItem){
+      const cartUpdate = await prismaClient.cartItems.update({
+        where:{
+          id: existingcartItem.id,
+          userId: req.user.id,
+          productId: existingcartItem.productId
+        },
+        data:{
+          quantity: req.body.quantity,
+        }
+      })
+      res.json(cartUpdate);
+    } else{
+      const cart = await prismaClient.cartItems.create({
       data: {
         userId: req.user.id,
         productId: Product.id,
@@ -24,6 +45,8 @@ export const addItemTocart = async (req: Request, res: Response) => {
     });
 
     res.json(cart);
+
+    }
   } catch (error) {
     throw new NotFoundException('Product not found', ErrorCode.PRODUCT_NOT_FOUND);
   }
