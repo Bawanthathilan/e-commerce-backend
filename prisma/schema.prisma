@@ -67,6 +67,7 @@ model Product{
   description String @db.Text()
   price Decimal
   tags String
+  image String @default("https://res.cloudinary.com/sliit123/image/upload/v1714326194/placeholder_l1ngfh.png")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

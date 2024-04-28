@@ -10,10 +10,11 @@ import { adminMiddleware } from '../middlewares/admin.middleware';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { errorHandler } from '../../error-handler';
 import { Router } from 'express';
+import {upload} from '../middlewares/multer.middleware'
 
 const productRoutes: Router = Router();
 
-productRoutes.post('/', [authMiddleware, adminMiddleware], errorHandler(createProduct));
+productRoutes.post('/', [authMiddleware, adminMiddleware , upload.single('image')], errorHandler(createProduct));
 productRoutes.put('/:id', [authMiddleware, adminMiddleware], errorHandler(updateProduct));
 productRoutes.delete('/:id', [authMiddleware, adminMiddleware], errorHandler(deleteProduct));
 productRoutes.get('/', errorHandler(listProducts));

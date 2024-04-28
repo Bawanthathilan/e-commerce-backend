@@ -3,17 +3,46 @@ import { prismaClient } from '..';
 import { ProductSchema } from '../schema/product';
 import { NotFoundException } from '../exceptions/not-found';
 import { ErrorCode } from '../exceptions/root';
+import { cloudinary } from '../utils/cloudinary';
+
 
 export const createProduct = async (req: Request, res: Response) => {
   ProductSchema.parse(req.body);
-  const Product = await prismaClient.product.create({
-    data: {
-      ...req.body,
-      tags: req.body.tags.join(',')
+  try {
+    if (!req.file.path) {
+      return res.status(400).json({ error: 'Image file is required' });
     }
-  });
+  
+    const result = await cloudinary.uploader.upload(req.file.path)
+    
+    if(result.secure_url){
+      let tags = '';
+      if (Array.isArray(req.body.tags)) {
+        tags = req.body.tags.join(','); // Join tags if it's an array
+      } else {
+        tags = req.body.tags; // Otherwise, use tags as is
+      }
+      const Product = await prismaClient.product.create({
+        data: {
+          ...req.body,
+          image: result.secure_url,
+          tags: tags,
+        },
+      });
+      res.json(Product);
+    }else{
+      console.log("errr")
+    }
+  } catch (error) {
+    console.log(error);
+    throw new NotFoundException('Product not found', ErrorCode.PRODUCT_NOT_FOUND);
+  }
 
-  res.json(Product);
+  
+
+  
+  
+  
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
@@ -35,16 +64,12 @@ export const updateProduct = async (req: Request, res: Response) => {
 };
 
 export const deleteProduct = async (req: Request, res: Response) => {
-  try {
-    const deleteProduct = await prismaClient.product.delete({
+     await prismaClient.product.delete({
       where: {
         id: +req.params.id
       }
     });
-    res.json(deleteProduct);
-  } catch (error) {
-    throw new NotFoundException('Product not found', ErrorCode.PRODUCT_NOT_FOUND);
-  }
+    res.json({ success: true });
 };
 
 export const listProducts = async (req: Request, res: Response) => {
