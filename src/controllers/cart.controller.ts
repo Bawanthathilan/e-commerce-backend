@@ -17,34 +17,34 @@ export const addItemTocart = async (req: Request, res: Response) => {
     });
 
     const existingcartItem = await prismaClient.cartItems.findFirst({
-      where:{
+      where: {
         userId: req.user.id,
         productId: Product.id,
       }
     })
 
-    if(existingcartItem){
+    if (existingcartItem) {
       const cartUpdate = await prismaClient.cartItems.update({
-        where:{
+        where: {
           id: existingcartItem.id,
           userId: req.user.id,
           productId: existingcartItem.productId
         },
-        data:{
+        data: {
           quantity: req.body.quantity,
         }
       })
       res.json(cartUpdate);
-    } else{
+    } else {
       const cart = await prismaClient.cartItems.create({
-      data: {
-        userId: req.user.id,
-        productId: Product.id,
-        quantity: validatedData.quantity
-      }
-    });
+        data: {
+          userId: req.user.id,
+          productId: Product.id,
+          quantity: validatedData.quantity
+        }
+      });
 
-    res.json(cart);
+      res.json(cart);
 
     }
   } catch (error) {
