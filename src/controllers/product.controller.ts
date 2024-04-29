@@ -75,11 +75,12 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const listProducts = async (req: Request, res: Response) => {
   const count = await prismaClient.product.count();
   const products = await prismaClient.product.findMany({
-    skip: +req.query.skip || 0,
+    skip: (+req.query.skip - 1) * 10 || 0,
     take: 10
   });
   res.json({ count, data: products });
 };
+
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const product = await prismaClient.product.findFirstOrThrow({
