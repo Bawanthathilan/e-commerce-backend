@@ -78,25 +78,28 @@ export const listOrders = async (req: Request, res: Response) => {
 };
 
 export const cancelOrder = async (req: Request, res: Response) => {
-  try {
-    const order = await prismaClient.order.update({
-      where: {
-        id: +req.params.id
-      },
-      data: {
-        status: 'CANCELED'
-      }
-    });
-    await prismaClient.orderEvent.create({
-      data: {
-        orderId: order.id,
-        status: 'CANCELED'
-      }
-    });
-    res.json(order);
-  } catch (error) {
-    throw new NotFoundException('Order Not Found', ErrorCode.ADDRESS_NOT_FOUND);
-  }
+  return await prismaClient.$transaction(async (tx)=>{
+    try {
+      const order = await tx.order.update({
+        where: {
+          id: +req.params.id
+        },
+        data: {
+          status: 'CANCELED'
+        }
+      });
+      await tx.orderEvent.create({
+        data: {
+          orderId: order.id,
+          status: 'CANCELED'
+        }
+      });
+      res.json(order);
+    } catch (error) {
+      throw new NotFoundException('Order Not Found', ErrorCode.ADDRESS_NOT_FOUND);
+    }
+  })
+
 };
 
 export const getOrderbyId = async (req: Request, res: Response) => {
@@ -138,25 +141,28 @@ export const listAllOrders = async (req: Request, res: Response) => {
 };
 
 export const changeStatus = async (req: Request, res: Response) => {
-  try {
-    const order = await prismaClient.order.update({
-      where: {
-        id: +req.params.id
-      },
-      data: {
-        status: req.body.status
-      }
-    });
-    await prismaClient.orderEvent.create({
-      data: {
-        orderId: order.id,
-        status: req.body.status
-      }
-    });
-    res.json(order);
-  } catch (error) {
-    throw new NotFoundException('Order not found', ErrorCode.ADDRESS_NOT_FOUND);
-  }
+  return await prismaClient.$transaction(async (tx)=>{
+    try {
+      const order = await tx.order.update({
+        where: {
+          id: +req.params.id
+        },
+        data: {
+          status: req.body.status
+        }
+      });
+      await tx.orderEvent.create({
+        data: {
+          orderId: order.id,
+          status: req.body.status
+        }
+      });
+      res.json(order);
+    } catch (error) {
+      throw new NotFoundException('Order not found', ErrorCode.ADDRESS_NOT_FOUND);
+    }
+  })
+ 
 };
 
 export const listUserOrders = async (req: Request, res: Response) => {
